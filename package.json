@@ -1,0 +1,19 @@
+{
+  "name": "ikshrestha.github.io",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Personal website of Krishna Kumar Shrestha — actuarial science, data & risk analytics.",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
+  },
+  "dependencies": {
+    "@fontsource-variable/fraunces": "^5.2.0",
+    "@fontsource-variable/inter": "^5.2.0"
+  }
+}
