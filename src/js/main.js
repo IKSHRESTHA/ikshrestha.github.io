@@ -14,6 +14,7 @@ import {
   skills,
 } from '../data/resume.js';
 import * as tpl from './render.js';
+import { initEffects } from './effects.js';
 
 document.documentElement.classList.add('js');
 
@@ -122,3 +123,6 @@ const revealObserver = new IntersectionObserver(
 );
 
 document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
+
+// ------------------------------ Visual effects -------------------------------
+initEffects();
