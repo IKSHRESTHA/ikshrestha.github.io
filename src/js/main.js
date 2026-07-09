@@ -43,6 +43,29 @@ if (examOrg) examOrg.textContent = exams.org;
 const year = document.getElementById('year');
 if (year) year.textContent = new Date().getFullYear();
 
+// ------------------------------ Project popup -------------------------------
+// Clicking a project opens its story, then asks whether to open the live app.
+const projectDialog = document.getElementById('project-dialog');
+const projectsList = document.getElementById('projects-list');
+
+if (projectDialog && projectsList) {
+  projectsList.addEventListener('click', (event) => {
+    const trigger = event.target.closest('.js-project-open');
+    if (!trigger) return;
+    const project = projects[Number(trigger.dataset.projectIndex)];
+    if (!project) return;
+    projectDialog.innerHTML = tpl.projectDialog(project);
+    projectDialog.showModal();
+  });
+
+  projectDialog.addEventListener('click', (event) => {
+    const openedApp = event.target.closest('a[target="_blank"]');
+    const closed = event.target.closest('.js-dialog-close');
+    const backdrop = event.target === projectDialog; // clicks outside .dialog-inner
+    if (openedApp || closed || backdrop) projectDialog.close();
+  });
+}
+
 // ------------------------------ Header state --------------------------------
 const header = document.getElementById('site-header');
 const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);

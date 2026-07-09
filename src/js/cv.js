@@ -89,7 +89,7 @@ mount(
       entry({
         title: esc(p.name),
         dates: esc(p.stack.join(', ')),
-        org: `<a href="${p.link}" rel="noopener">${esc(p.link.replace('https://', ''))}</a>`,
+        org: `<a href="${p.link}" rel="noopener">${esc(p.link.replace(/^https?:\/\//, '').replace(/\/$/, ''))}</a>`,
         bullets: p.bullets,
       })
     )

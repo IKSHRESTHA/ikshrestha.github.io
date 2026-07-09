@@ -92,7 +92,7 @@ const projectMotif = `
 export function projectCards(projects) {
   return projects
     .map(
-      (p) => `
+      (p, i) => `
       <article class="project-card reveal">
         <div class="project-visual">${projectMotif}</div>
         <div class="project-body">
@@ -103,13 +103,59 @@ export function projectCards(projects) {
           <ul class="project-bullets">
             ${p.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}
           </ul>
-          <a class="btn btn-maroon" href="${p.link}" rel="noopener">
+          <button class="btn btn-maroon js-project-open" type="button" data-project-index="${i}">
             ${esc(p.linkLabel)} ${icons.external}
-          </a>
+          </button>
         </div>
       </article>`
     )
     .join('');
+}
+
+// The popup shown when a project is clicked: the full story of the project,
+// the tools behind it, and an ask — do you want to open the live app?
+export function projectDialog(p) {
+  const article = p.article ?? { sections: [], tools: [] };
+  const sections = article.sections
+    .map(
+      (s) => `
+      <h4 class="dialog-heading">${esc(s.heading)}</h4>
+      ${s.body.map((par) => `<p>${esc(par)}</p>`).join('')}`
+    )
+    .join('');
+  const tools = article.tools.length
+    ? `
+      <h4 class="dialog-heading">Tools used</h4>
+      <ul class="dialog-tools">
+        ${article.tools
+          .map((t) => `<li><strong>${esc(t.name)}</strong> — ${esc(t.role)}</li>`)
+          .join('')}
+      </ul>`
+    : '';
+
+  return `
+    <article class="dialog-inner">
+      <button class="dialog-close js-dialog-close" type="button" aria-label="Close">&times;</button>
+      <p class="eyebrow">Project story</p>
+      <h3 class="dialog-title" id="project-dialog-title">${esc(p.name)}</h3>
+      <ul class="project-stack" aria-label="Technology stack">
+        ${p.stack.map((s) => `<li>${esc(s)}</li>`).join('')}
+      </ul>
+      ${sections}
+      ${tools}
+      <div class="dialog-cta">
+        <p class="dialog-cta-question">Want to see the live project?</p>
+        <p class="dialog-cta-url">${esc(p.link)}</p>
+        <div class="dialog-cta-actions">
+          <a class="btn btn-maroon" href="${p.link}" target="_blank" rel="noopener">
+            Yes — open the app ${icons.external}
+          </a>
+          <button class="btn btn-outline js-dialog-close" type="button">Not now</button>
+        </div>
+        <p class="dialog-cta-note">The source code lives in a private repository — the live app is public.</p>
+      </div>
+    </article>
+  `;
 }
 
 export function educationCards(education) {

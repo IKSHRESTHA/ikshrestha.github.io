@@ -790,6 +790,149 @@ section[id] {
   }
 }
 
+/* --------------------------- Project story dialog -------------------------- */
+.project-dialog {
+  border: none;
+  padding: 0;
+  width: min(700px, calc(100vw - 2rem));
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow-pop);
+}
+
+.project-dialog::backdrop {
+  background: rgba(15, 29, 56, 0.55);
+}
+
+.project-dialog[open] {
+  animation: dialog-in 0.22s ease-out;
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dialog-inner {
+  position: relative;
+  max-height: min(85vh, 52rem);
+  overflow-y: auto;
+  padding: clamp(1.8rem, 4vw, 2.75rem);
+}
+
+.dialog-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 2.4rem;
+  height: 2.4rem;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--navy-900);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease;
+}
+
+.dialog-close:hover {
+  color: var(--maroon);
+  border-color: var(--maroon);
+}
+
+.dialog-title {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
+  font-weight: 620;
+  line-height: 1.25;
+  color: var(--navy-900);
+  margin: 0.35rem 0 0.9rem;
+}
+
+.dialog-heading {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 620;
+  color: var(--navy-900);
+  margin: 1.6rem 0 0.55rem;
+}
+
+.dialog-inner > p:not(.eyebrow) {
+  color: var(--muted);
+  font-size: 0.97rem;
+  margin-bottom: 0.85rem;
+}
+
+.dialog-tools {
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.dialog-tools li {
+  position: relative;
+  padding-left: 1.35rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.dialog-tools li::before {
+  content: '▹';
+  position: absolute;
+  left: 0;
+  color: var(--maroon);
+  font-weight: 700;
+}
+
+.dialog-tools strong {
+  color: var(--navy-900);
+  font-weight: 650;
+}
+
+.dialog-cta {
+  margin-top: 1.9rem;
+  padding: 1.4rem 1.5rem;
+  border-radius: var(--radius-md);
+  background: var(--navy-tint);
+}
+
+.dialog-cta-question {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 620;
+  color: var(--navy-900);
+}
+
+.dialog-cta-url {
+  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-size: 0.86rem;
+  color: var(--navy-700);
+  word-break: break-all;
+  margin: 0.25rem 0 1rem;
+}
+
+.dialog-cta-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+}
+
+.dialog-cta-note {
+  margin-top: 0.9rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 /* --------------------------- Education & exams ----------------------------- */
 .education-grid {
   display: grid;
