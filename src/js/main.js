@@ -8,6 +8,7 @@ import {
   exams,
   experience,
   projects,
+  capabilities,
   education,
   honors,
   leadership,
@@ -29,6 +30,7 @@ mount('interest-tags', tpl.interestTags(profile));
 mount('hero-social', tpl.heroSocial(profile));
 mount('stats-strip', tpl.statsStrip(stats));
 mount('experience-list', tpl.experienceTimeline(experience));
+mount('capability-grid', tpl.capabilityCards(capabilities));
 mount('projects-list', tpl.projectCards(projects));
 mount('education-list', tpl.educationCards(education));
 mount('exam-pills', tpl.examPills(exams));
@@ -64,6 +66,30 @@ if (projectDialog && projectsList) {
     const closed = event.target.closest('.js-dialog-close');
     const backdrop = event.target === projectDialog; // clicks outside .dialog-inner
     if (openedApp || closed || backdrop) projectDialog.close();
+  });
+}
+
+// ------------------------------ Theme toggle --------------------------------
+// Light (pale white) is the default; the choice is remembered. A tiny inline
+// script in index.html applies the saved theme before first paint.
+const themeToggle = document.getElementById('theme-toggle');
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+
+const syncThemeMeta = () => {
+  if (!themeMeta) return;
+  themeMeta.content = document.documentElement.dataset.theme === 'dark' ? '#0a1120' : '#faf7f2';
+};
+syncThemeMeta();
+
+if (themeToggle) {
+  const isDark = () => document.documentElement.dataset.theme === 'dark';
+  themeToggle.setAttribute('aria-pressed', String(isDark()));
+  themeToggle.addEventListener('click', () => {
+    const next = isDark() ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next;
+    localStorage.setItem('theme', next);
+    themeToggle.setAttribute('aria-pressed', String(next === 'dark'));
+    syncThemeMeta();
   });
 }
 

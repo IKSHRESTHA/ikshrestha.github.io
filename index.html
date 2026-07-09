@@ -3,7 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a1120" />
+    <meta name="theme-color" content="#faf7f2" />
+    <!-- Apply the saved theme before first paint so dark mode never flashes -->
+    <script>
+      if (localStorage.getItem('theme') === 'dark') {
+        document.documentElement.dataset.theme = 'dark';
+      }
+    </script>
     <title>Krishna Kumar Shrestha — Actuarial Science &amp; Data Analytics</title>
     <meta
       name="description"
@@ -57,17 +63,8 @@
       <div class="container nav-inner">
         <a class="brand" href="#top">Krishna&nbsp;Shrestha<span class="brand-dot">.</span></a>
 
-        <button
-          class="nav-toggle"
-          id="nav-toggle"
-          aria-expanded="false"
-          aria-controls="site-nav"
-          aria-label="Toggle navigation"
-        >
-          <span></span><span></span><span></span>
-        </button>
-
         <nav class="site-nav" id="site-nav" aria-label="Primary">
+          <a href="#strengths">Strengths</a>
           <a href="#experience">Experience</a>
           <a href="#projects">Projects</a>
           <a href="#education">Education</a>
@@ -75,6 +72,28 @@
           <a href="#contact">Contact</a>
           <a class="btn btn-small btn-maroon" href="/cv.html">View CV</a>
         </nav>
+
+        <div class="nav-tools">
+          <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between light and dark mode">
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32 1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+            </svg>
+          </button>
+
+          <button
+            class="nav-toggle"
+            id="nav-toggle"
+            aria-expanded="false"
+            aria-controls="site-nav"
+            aria-label="Toggle navigation"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
       </div>
     </header>
 
@@ -89,6 +108,10 @@
             <h1 class="hero-name reveal">Krishna Kumar<br /><em>Shrestha</em></h1>
             <p class="hero-tagline reveal">
               An actuary-in-training who turns messy claims data into decisions people can act on.
+            </p>
+            <p class="hero-now reveal">
+              <strong>Now:</strong> Graduate Research Assistant, MTSU · M.S. Actuarial Science, Aug 2026 ·
+              5 SOA exams · Open to actuarial internships &amp; full-time roles
             </p>
             <div class="hero-bio reveal" id="hero-bio"></div>
             <ul class="tag-row reveal" id="interest-tags" aria-label="Areas of interest"></ul>
@@ -140,21 +163,30 @@
         </div>
       </div>
 
-      <!-- ================= Experience ================= -->
-      <section class="section" id="experience">
+      <!-- ================= Strengths ================= -->
+      <section class="section" id="strengths">
         <div class="container">
-          <p class="eyebrow reveal">01 · Where I&rsquo;ve worked</p>
+          <p class="eyebrow reveal">01 · Why hire me</p>
+          <h2 class="section-title reveal">What I bring to an actuarial team</h2>
+          <div class="capability-grid" id="capability-grid"></div>
+        </div>
+      </section>
+
+      <!-- ================= Experience ================= -->
+      <section class="section section-tinted" id="experience">
+        <div class="container">
+          <p class="eyebrow reveal">02 · Where I&rsquo;ve worked</p>
           <h2 class="section-title reveal">Professional Experience</h2>
           <ol class="timeline" id="experience-list"></ol>
         </div>
       </section>
 
       <!-- ================= Projects ================= -->
-      <section class="section section-tinted" id="projects">
+      <section class="section" id="projects">
         <div class="container">
-          <p class="eyebrow reveal">02 · Things I&rsquo;ve built</p>
+          <p class="eyebrow reveal">03 · Things I&rsquo;ve built</p>
           <h2 class="section-title reveal">Projects</h2>
-          <div id="projects-list"></div>
+          <div class="projects-grid" id="projects-list"></div>
           <div class="more-projects reveal">
             <p>
               More in the pipeline — follow along on
@@ -165,9 +197,9 @@
       </section>
 
       <!-- ================= Education & Exams ================= -->
-      <section class="section" id="education">
+      <section class="section section-tinted" id="education">
         <div class="container">
-          <p class="eyebrow reveal">03 · Credentials</p>
+          <p class="eyebrow reveal">04 · Credentials</p>
           <h2 class="section-title reveal">Education &amp; Exams</h2>
 
           <div class="education-grid" id="education-list"></div>
@@ -188,9 +220,9 @@
       </section>
 
       <!-- ================= Skills & Leadership ================= -->
-      <section class="section section-tinted" id="skills">
+      <section class="section" id="skills">
         <div class="container">
-          <p class="eyebrow reveal">04 · What I work with</p>
+          <p class="eyebrow reveal">05 · What I work with</p>
           <h2 class="section-title reveal">Skills &amp; Leadership</h2>
 
           <div class="skills-grid" id="skills-groups"></div>
@@ -200,9 +232,9 @@
       </section>
 
       <!-- ================= Contact ================= -->
-      <section class="section contact" id="contact">
+      <section class="section section-tinted contact" id="contact">
         <div class="container contact-inner">
-          <p class="eyebrow reveal">05 · Contact</p>
+          <p class="eyebrow reveal">06 · Contact</p>
           <h2 class="section-title reveal">Let&rsquo;s talk shop.</h2>
           <p class="contact-lede reveal">
             Whether it&rsquo;s an actuarial internship, a research collaboration, or a question

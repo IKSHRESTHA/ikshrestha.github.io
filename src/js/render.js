@@ -60,53 +60,38 @@ export function experienceTimeline(experience) {
     .join('');
 }
 
-// Decorative motif for the project card: a stylized projection chart.
-const projectMotif = `
-  <svg viewBox="0 0 300 200" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-    <g stroke="rgba(250,247,242,0.16)" stroke-width="1">
-      <line x1="30" y1="40" x2="30" y2="170" />
-      <line x1="30" y1="170" x2="280" y2="170" />
-      <line x1="30" y1="105" x2="280" y2="105" stroke-dasharray="4 6" />
-      <line x1="30" y1="40" x2="280" y2="40" stroke-dasharray="4 6" />
-    </g>
-    <g fill="rgba(250,247,242,0.14)">
-      <rect x="55" y="128" width="26" height="42" rx="3" />
-      <rect x="105" y="112" width="26" height="58" rx="3" />
-      <rect x="155" y="88" width="26" height="82" rx="3" />
-      <rect x="205" y="64" width="26" height="106" rx="3" />
-    </g>
-    <polyline
-      points="45,150 95,132 145,100 195,78 260,50"
-      stroke="#e8b4b8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-    />
-    <g fill="#faf7f2">
-      <circle cx="45" cy="150" r="4.5" />
-      <circle cx="95" cy="132" r="4.5" />
-      <circle cx="145" cy="100" r="4.5" />
-      <circle cx="195" cy="78" r="4.5" />
-      <circle cx="260" cy="50" r="4.5" />
-    </g>
-  </svg>
-`;
-
+// Compact project cards laid out in a grid — the full story lives in the
+// popup, so a visitor can see every project (and the rest of the page)
+// without one card taking over the screen.
 export function projectCards(projects) {
   return projects
     .map(
       (p, i) => `
-      <article class="project-card reveal">
-        <div class="project-visual">${projectMotif}</div>
-        <div class="project-body">
-          <h3 class="project-title">${esc(p.name)}</h3>
-          <ul class="project-stack" aria-label="Technology stack">
-            ${p.stack.map((s) => `<li>${esc(s)}</li>`).join('')}
-          </ul>
-          <ul class="project-bullets">
-            ${p.bullets.map((b) => `<li>${esc(b)}</li>`).join('')}
-          </ul>
-          <button class="btn btn-maroon js-project-open" type="button" data-project-index="${i}">
-            ${esc(p.linkLabel)} ${icons.external}
-          </button>
-        </div>
+      <article class="project-card reveal js-project-open" data-project-index="${i}">
+        <span class="project-index" aria-hidden="true">0${i + 1}</span>
+        <h3 class="project-title">${esc(p.name)}</h3>
+        <p class="project-summary">${esc(p.summary)}</p>
+        <ul class="project-stack" aria-label="Technology stack">
+          ${p.stack.map((s) => `<li>${esc(s)}</li>`).join('')}
+        </ul>
+        <button class="project-open-btn js-project-open" type="button" data-project-index="${i}">
+          View project ${icons.external}
+        </button>
+      </article>`
+    )
+    .join('');
+}
+
+export function capabilityCards(capabilities) {
+  return capabilities
+    .map(
+      (c) => `
+      <article class="capability-card reveal">
+        <h3 class="capability-title">${esc(c.title)}</h3>
+        <p class="capability-desc">${esc(c.desc)}</p>
+        <ul class="mini-tags" aria-label="Related methods and tools">
+          ${c.tags.map((t) => `<li>${esc(t)}</li>`).join('')}
+        </ul>
       </article>`
     )
     .join('');
@@ -148,11 +133,13 @@ export function projectDialog(p) {
         <p class="dialog-cta-url">${esc(p.link)}</p>
         <div class="dialog-cta-actions">
           <a class="btn btn-maroon" href="${p.link}" target="_blank" rel="noopener">
-            Yes — open the app ${icons.external}
+            ${esc(p.ctaLabel ?? 'Yes — open the app')} ${icons.external}
           </a>
           <button class="btn btn-outline js-dialog-close" type="button">Not now</button>
         </div>
-        <p class="dialog-cta-note">The source code lives in a private repository — the live app is public.</p>
+        <p class="dialog-cta-note">${esc(
+          p.ctaNote ?? 'The source code lives in a private repository — the live app is public.'
+        )}</p>
       </div>
     </article>
   `;

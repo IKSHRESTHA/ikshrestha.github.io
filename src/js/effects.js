@@ -19,12 +19,19 @@ export function initHeroCanvas() {
   const HOLD_MS = 2600;
   const FADE_MS = 900;
 
-  // gold / rose / steel — matches the CSS tokens
-  const palette = [
-    [227, 183, 103],
-    [232, 167, 174],
-    [125, 156, 208],
-  ];
+  // Path colors per theme: gold/rose/steel on dark, bronze/maroon/navy on light.
+  const palette = () =>
+    document.documentElement.dataset.theme === 'dark'
+      ? [
+          [227, 183, 103],
+          [232, 167, 174],
+          [125, 156, 208],
+        ]
+      : [
+          [138, 90, 18],
+          [122, 30, 46],
+          [31, 58, 102],
+        ];
 
   let paths = [];
   let width = 0;
@@ -52,15 +59,15 @@ export function initHeroCanvas() {
       }
       paths.push({
         pts,
-        color: palette[p % palette.length],
-        alpha: 0.06 + Math.random() * 0.17,
+        colorIndex: p % 3,
+        alpha: 0.07 + Math.random() * 0.17,
         lineWidth: 0.8 + Math.random() * 1.5,
       });
     }
   }
 
-  function strokePath(path, upTo, alphaScale) {
-    const [r, g, b] = path.color;
+  function strokePath(path, color, upTo, alphaScale) {
+    const [r, g, b] = color;
     ctx.beginPath();
     ctx.moveTo(path.pts[0][0], path.pts[0][1]);
     for (let s = 1; s <= upTo; s++) ctx.lineTo(path.pts[s][0], path.pts[s][1]);
@@ -73,12 +80,14 @@ export function initHeroCanvas() {
     ctx.clearRect(0, 0, width, height);
     ctx.lineJoin = 'round';
     ctx.lineCap = 'round';
+    const pal = palette(); // resolved per frame so a theme switch recolors live
     const upTo = Math.max(1, Math.floor(progress * STEPS));
     for (const path of paths) {
-      strokePath(path, upTo, alphaScale);
+      const color = pal[path.colorIndex];
+      strokePath(path, color, upTo, alphaScale);
       // a small bright head while the paths are still being drawn
       if (progress < 1 && alphaScale === 1) {
-        const [r, g, b] = path.color;
+        const [r, g, b] = color;
         const [hx, hy] = path.pts[upTo];
         ctx.beginPath();
         ctx.arc(hx, hy, 1.6, 0, Math.PI * 2);
@@ -157,6 +166,13 @@ export function initHeroCanvas() {
   io.observe(canvas);
 
   document.addEventListener('visibilitychange', start);
+
+  // Repaint the static frame when the theme flips (the animated loop picks
+  // the new palette up on its own next frame).
+  new MutationObserver(() => {
+    if (reducedMotion.matches) draw(1, 0.8);
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
   reducedMotion.addEventListener('change', () => {
     if (reducedMotion.matches) {
       if (rafId) cancelAnimationFrame(rafId);
