@@ -15,9 +15,6 @@ import {
   skills,
 } from '../data/resume.js';
 import * as tpl from './render.js';
-import { initEffects } from './effects.js';
-
-document.documentElement.classList.add('js');
 
 // ------------------------------ Render content ------------------------------
 const mount = (id, html) => {
@@ -134,21 +131,3 @@ const spy = new IntersectionObserver(
 );
 
 sections.forEach((section) => spy.observe(section));
-
-// ------------------------------ Reveal on scroll -----------------------------
-const revealObserver = new IntersectionObserver(
-  (entries) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('is-visible');
-        revealObserver.unobserve(entry.target);
-      }
-    });
-  },
-  { threshold: 0.12, rootMargin: '0px 0px -5% 0px' }
-);
-
-document.querySelectorAll('.reveal').forEach((el) => revealObserver.observe(el));
-
-// ------------------------------ Visual effects -------------------------------
-initEffects();
